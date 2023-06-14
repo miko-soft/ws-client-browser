@@ -1,0 +1,41 @@
+{
+  "name": "@mikosoft/ws-client-browser",
+  "version": "1.0.0",
+  "title": "Websocket Client - Browser",
+  "description": "Websocket Client for browser which works best with the Mikosoft Websocket Server.",
+  "author": "Sasa Mikodanic <smikodanic@gmail.com>",
+  "homepage": "http://libs.mikosoft.info",
+  "license": "MIT",
+  "keywords": [
+    "websocket",
+    "client",
+    "browser",
+    "socket",
+    "ws",
+    "RFC 6455",
+    "real-time",
+    "realtime",
+    "tcp",
+    "websocket client",
+    "mikosoft"
+  ],
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "inst": "rm -rf node_modules && rm package-lock.json && npm install",
+    "dev": "npx webpack --config webpack.config.cjs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "esbuild-loader": "^2.19.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "directories": {
+    "example": "examples",
+    "src": "src"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
