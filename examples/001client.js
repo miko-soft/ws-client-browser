@@ -1,6 +1,3 @@
-import { helper } from '@mikosoft/ws-lib';
-
-
 class TestClient extends window.mikosoftWebsocket.Client13jsonRWS {
 
   constructor(wcOpts) {
@@ -100,7 +97,7 @@ class TestClient extends window.mikosoftWebsocket.Client13jsonRWS {
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/readyState
   printInfo(msg) {
-    const msgSize = helper.getMessageSize(msg);
+    const msgSize = this.helper.getMessageSize(msg);
     if (this.wsocket && this.wsocket.readyState === 1) { console.log(`Sent (${msgSize}): ${msg}`); }
   }
 

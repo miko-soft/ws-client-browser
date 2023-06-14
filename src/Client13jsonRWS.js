@@ -3,8 +3,11 @@
  * - websocket version: 13
  * - subprotocol: jsonRWS
  */
-import eventEmitter from './auxillary/eventEmitter.js';
-import { jsonRWS, raw, helper } from '@mikosoft/ws-lib';
+import eventEmitter from './lib/eventEmitter.js';
+import helper from './lib/helper.js';
+import jsonRWS from './lib/subprotocol/jsonRWS.js';
+import raw from './lib/subprotocol/raw.js';
+
 
 
 class Client13jsonRWS {
@@ -29,6 +32,8 @@ class Client13jsonRWS {
     this.socketID; // socket ID number, for example: 20210214082949459100
     this.attempt = 1; // reconnect attempt counter
     this.subprotocolLib;
+
+    this.helper = helper;
   }
 
 
@@ -38,7 +43,7 @@ class Client13jsonRWS {
    * @returns {Promise<WebSocket>}
    */
   connect() {
-    this.socketID = helper.generateID();
+    this.socketID = this.helper.generateID();
     let wsURL = this.wcOpts.wsURL; // websocket URL: ws://localhost:3211/something?authkey=TRTmrt
     if (/\?[a-zA-Z0-9]/.test(wsURL)) { wsURL += `&socketID=${this.socketID}`; }
     else { wsURL += `socketID=${this.socketID}`; }
@@ -73,7 +78,7 @@ class Client13jsonRWS {
     const attempts = this.wcOpts.reconnectAttempts;
     const delay = this.wcOpts.reconnectDelay;
     if (this.attempt <= attempts) {
-      await helper.sleep(delay);
+      await this.helper.sleep(delay);
       this.connect();
       console.log(`Reconnect attempt #${this.attempt} of ${attempts} in ${delay}ms`);
       this.attempt++;
@@ -175,7 +180,7 @@ class Client13jsonRWS {
    * @return {object} full websocket message object {id, from, to, cmd, payload}
    */
   async carryOut(to, cmd, payload) {
-    const id = helper.generateID(); // the message ID
+    const id = this.helper.generateID(); // the message ID
     const from = this.socketID; // the sender ID
 
     // test if "to" is string
@@ -275,7 +280,7 @@ class Client13jsonRWS {
     return new Promise(async (resolve, reject) => {
       const listener = msg => { if (msg.cmd === cmd) { resolve(msg); } };
       this.once('question', listener);
-      await helper.sleep(this.wcOpts.questionTimeout);
+      await this.helper.sleep(this.wcOpts.questionTimeout);
       this.off('question', listener);
       reject(new Error(`No answer for the question: ${cmd}`));
     });
@@ -456,8 +461,8 @@ class Client13jsonRWS {
 
 
 
-
-
 export default Client13jsonRWS;
-window.mikosoftWebsocket = { Client13jsonRWS };
 
+
+if (!window.mikosoftWebsocket) { window.mikosoftWebsocket = {}; }
+window.mikosoftWebsocket.Client13jsonRWS = Client13jsonRWS;

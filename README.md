@@ -32,7 +32,7 @@ There are two ways to use it in your project:
 
 - **script in HTML**
 ```html
-<script src="/node_modules/@mikosoft/ws-client-browser/dist/client13jsonRWS.min.js"></script>
+<script src="/node_modules/@mikosoft/ws-client-browser/dist/client13jsonRWS/client13jsonRWS.min.js"></script>
 ```
 ```javascript
 // now fetch it as window.mikosoftWebsocket global variable
@@ -42,7 +42,7 @@ await wsClient.connect(); // open websocket connection
 
 - **import in JS**
 ```javascript
-import { Client13jsonRWS } from '/node_modules/@mikosoft/ws-client-browser/index.js';
+import { Client13jsonRWS } from '@mikosoft/ws-client-browser';
 
 const wsClient = new Client13jsonRWS(wsOpts);
 await wsClient.connect(); // open websocket connection
@@ -54,8 +54,8 @@ await wsClient.connect(); // open websocket connection
 - **connect()** - connect to the websocket server
 - **disconnect()** - disconnect from the websocket server
 
-- **sendOne(to:number, msg:any)** - send message to one websocket socket/client (parameter *to* is the socket ID)
-- **send(to:number[], msg:any)** - send message to one or more clients
+- **sendOne(to:string, msg:any)** - send message to one websocket socket/client (parameter *to* is the socket ID)
+- **send(to:string[], msg:any)** - send message to one or more clients
 - **broadcast(msg:any)** - send message to all clients except the sender
 - **sendAll(msg:any)** - send message to all clients and the sender
 
@@ -81,8 +81,8 @@ await wsClient.connect(); // open websocket connection
 
 ## Example
 ```javascript
-import apiwsConst from '/client/conf/apiwsConst.js';
-import { Client13jsonRWS } from '/node_modules/@mikosoft/ws-client-browser/clientBrowser/index.js';
+import { Client13jsonRWS } from '@mikosoft/ws-client-browser';
+import apiwsConst from '/src/conf/apiwsConst.js';
 
 
 /**
@@ -118,27 +118,26 @@ class WsLib {
       };
       // window.myApp.wsClient = new window.mikosoftWebsocket.Client13jsonRWS(wsOpts); // app.html --> <script src="/node_modules/@mikosoft/ws-client-browser/dist/client13jsonRWS.min.js"></script>
       window.myApp.wsClient = new Client13jsonRWS(wsOpts);
-
-      await window.myApp.wsClient.connect(); // open websocket connection
     }
+
+
+    // open websocket connection
+    await window.myApp.wsClient.connect();
 
 
     // disconnection listener
     window.myApp.wsClient.on('disconnected', () => {
       // console.log('Websocket is disconnected.');
       window.myApp.wsClient = undefined;
-      ctrl.$model.isWSconnected = false;
     });
 
-    // update header.html (reused in postflight rend_isWSconnected.js)
-    ctrl.isWSconnected = true;
+
   }
 
 
+  // close websocket connection
   async dekonekt() {
-    const wsClient = window.myApp.wsClient;
-    if (!!wsClient) { wsClient.disconnect(); } // close websocket connection
-    window.myApp.wsClient = undefined;
+    if (!!window.myApp.wsClient) { window.myApp.wsClient.disconnect(); }
   }
 
 
@@ -154,7 +153,7 @@ export default new WsLib();
 ## Development and Build
 If you want to participate in developing of the library:
 ```bash
-$ npm run inst  # Install required devDependencies
+$ npm run inst  # Install required dependencies and devDependencies
 $ npm run dev   # This command will watch for /src/ file changes and build in /dist/ folder
 ```
 
