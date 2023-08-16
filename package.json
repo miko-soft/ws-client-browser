@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "title": "Websocket Client - Browser",
   "description": "Websocket Client for browser which works best with the Mikosoft Websocket Server.",
-  "author": "Sasa Mikodanic <smikodanic@gmail.com>",
+  "author": "Mikosoft",
   "homepage": "http://libs.mikosoft.info",
   "license": "MIT",
   "keywords": [
@@ -34,6 +34,10 @@
   "directories": {
     "example": "examples",
     "src": "src"
+  },
+  "engines": {
+    "npm": ">=8.5.5 <9.0.0",
+    "node": ">=16.15.0 <20.0.0"
   },
   "publishConfig": {
     "access": "public"

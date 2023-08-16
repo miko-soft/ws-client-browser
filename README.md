@@ -6,7 +6,7 @@ Small but very powerful library made according to [RFC6455 Standard](https://www
 
 
 ## Website Documentation
-[http://libs.mikosoft.info/ws-client-browser](http://libs.mikosoft.info/ws-client-browser)
+[http://libs.mikosoft.info/websocket/ws-client-browser](http://libs.mikosoft.info/websocket/ws-client-browser)
 
 
 
@@ -32,19 +32,19 @@ There are two ways to use it in your project:
 
 - **script in HTML**
 ```html
-<script src="/node_modules/@mikosoft/ws-client-browser/dist/client13jsonRWS/client13jsonRWS.min.js"></script>
+<script src="/node_modules/@mikosoft/ws-client-browser/dist/wsClientBrowser.min.js"></script>
 ```
 ```javascript
-// now fetch it as window.mikosoftWebsocket global variable
-const wsClient = new window.mikosoftWebsocket.Client13jsonRWS(wsOpts);
+// now fetch it as window.mikosoft global variable
+const wsClient = new window.mikosoft.WsClientBrowser(wsOpts);
 await wsClient.connect(); // open websocket connection
 ```
 
 - **import in JS**
 ```javascript
-import { Client13jsonRWS } from '@mikosoft/ws-client-browser';
+import { WsClientBrowser } from '@mikosoft/ws-client-browser';
 
-const wsClient = new Client13jsonRWS(wsOpts);
+const wsClient = new WsClientBrowser(wsOpts);
 await wsClient.connect(); // open websocket connection
 ```
 
@@ -81,7 +81,7 @@ await wsClient.connect(); // open websocket connection
 
 ## Example
 ```javascript
-import { Client13jsonRWS } from '@mikosoft/ws-client-browser';
+import { WsClientBrowser } from '@mikosoft/ws-client-browser';
 import apiwsConst from '/src/conf/apiwsConst.js';
 
 
@@ -116,8 +116,8 @@ class WsLib {
         debug: false,
         debug_DataParser: false
       };
-      // window.myApp.wsClient = new window.mikosoftWebsocket.Client13jsonRWS(wsOpts); // app.html --> <script src="/node_modules/@mikosoft/ws-client-browser/dist/client13jsonRWS.min.js"></script>
-      window.myApp.wsClient = new Client13jsonRWS(wsOpts);
+      // window.myApp.wsClient = new window.mikosoft.WsClientBrowser(wsOpts); // app.html --> <script src="/node_modules/@mikosoft/ws-client-browser/dist/WsClientBrowser.min.js"></script>
+      window.myApp.wsClient = new WsClientBrowser(wsOpts);
     }
 
 

@@ -2,7 +2,7 @@
 /******/ 	"use strict";
 var __webpack_exports__ = {};
 
-// UNUSED EXPORTS: default
+// UNUSED EXPORTS: WsClientBrowser
 
 ;// CONCATENATED MODULE: ./src/lib/eventEmitter.js
 /**
@@ -522,11 +522,11 @@ class Raw {
 
 /* harmony default export */ const raw = (new Raw());
 
-;// CONCATENATED MODULE: ./src/Client13jsonRWS.js
+;// CONCATENATED MODULE: ./src/ws-clients/WsClientBrowser13.js
 /**
  * Websocket Client for Browser
  * - websocket version: 13
- * - subprotocol: jsonRWS
+ * - subprotocols: raw, jsonRWS
  */
 
 
@@ -535,7 +535,7 @@ class Raw {
 
 
 
-class Client13jsonRWS {
+class WsClientBrowser13 {
 
   /**
    * @param {{wsURL:string, questionTimeout:number, reconnectAttempts:number, reconnectDelay:number, subprotocols:string[], debug:boolean}} wcOpts - websocket client options
@@ -718,7 +718,7 @@ class Client13jsonRWS {
     }
 
     const msg = { id, from, to, cmd, payload };
-    const msgSTR = jsonRWS.outgoing(msg);
+    const msgSTR = this.subprotocolLib.outgoing(msg);
     await this.socketWrite(msgSTR);
 
     this._debugger('Sent::', msgSTR);
@@ -981,17 +981,29 @@ class Client13jsonRWS {
   }
 
 
-
 }
 
 
 
-/* harmony default export */ const src_Client13jsonRWS = ((/* unused pure expression or super */ null && (Client13jsonRWS)));
+/* harmony default export */ const ws_clients_WsClientBrowser13 = (WsClientBrowser13);
+
+;// CONCATENATED MODULE: ./index.js
 
 
-if (!window.mikosoftWebsocket) { window.mikosoftWebsocket = {}; }
-window.mikosoftWebsocket.Client13jsonRWS = Client13jsonRWS;
+
+// default
+const WsClientBrowser = ws_clients_WsClientBrowser13;
+
+// ESM
+
+
+
+// window
+if (typeof window !== 'undefined') {
+  if (!window.mikosoft) { window.mikosoft = {}; }
+  window.mikosoft.WsClientBrowser = WsClientBrowser;
+}
 
 /******/ })()
 ;
-//# sourceMappingURL=client13jsonRWS.js.map
+//# sourceMappingURL=wsClientBrowser.js.map

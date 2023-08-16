@@ -1,16 +1,16 @@
 /**
  * Websocket Client for Browser
  * - websocket version: 13
- * - subprotocol: jsonRWS
+ * - subprotocols: raw, jsonRWS
  */
-import eventEmitter from './lib/eventEmitter.js';
-import helper from './lib/helper.js';
-import jsonRWS from './lib/subprotocol/jsonRWS.js';
-import raw from './lib/subprotocol/raw.js';
+import eventEmitter from '../lib/eventEmitter.js';
+import helper from '../lib/helper.js';
+import jsonRWS from '../lib/subprotocol/jsonRWS.js';
+import raw from '../lib/subprotocol/raw.js';
 
 
 
-class Client13jsonRWS {
+class WsClientBrowser13 {
 
   /**
    * @param {{wsURL:string, questionTimeout:number, reconnectAttempts:number, reconnectDelay:number, subprotocols:string[], debug:boolean}} wcOpts - websocket client options
@@ -193,7 +193,7 @@ class Client13jsonRWS {
     }
 
     const msg = { id, from, to, cmd, payload };
-    const msgSTR = jsonRWS.outgoing(msg);
+    const msgSTR = this.subprotocolLib.outgoing(msg);
     await this.socketWrite(msgSTR);
 
     this._debugger('Sent::', msgSTR);
@@ -456,13 +456,8 @@ class Client13jsonRWS {
   }
 
 
-
 }
 
 
 
-export default Client13jsonRWS;
-
-
-if (!window.mikosoftWebsocket) { window.mikosoftWebsocket = {}; }
-window.mikosoftWebsocket.Client13jsonRWS = Client13jsonRWS;
+export default WsClientBrowser13;

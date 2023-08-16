@@ -1,6 +1,5 @@
 /**
- * Run $ npx webpack --config client/webpack-client.config.js
- * from the project's root folder.
+ * Run "npx webpack --config webpack-client.config.js" from the project's root folder.
  */
 const path = require('path');
 const { ESBuildMinifyPlugin } = require('esbuild-loader');
@@ -8,11 +7,11 @@ const { ESBuildMinifyPlugin } = require('esbuild-loader');
 module.exports = {
   mode: 'production',
   entry: {
-    'client13jsonRWS': './src/Client13jsonRWS.js',
-    'client13jsonRWS.min': './src/Client13jsonRWS.js'
+    'wsClientBrowser': './index.js',
+    'wsClientBrowser.min': './index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist/client13jsonRWS'),
+    path: path.resolve(__dirname, 'dist/'),
     filename: '[name].js',
     clean: true // remove content of the directory defined in the output.path
   },

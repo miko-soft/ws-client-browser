@@ -1,4 +1,4 @@
-class TestClient extends window.mikosoftWebsocket.Client13jsonRWS {
+class TestClient extends window.mikosoft.WsClientBrowser {
 
   constructor(wcOpts) {
     super(wcOpts);
