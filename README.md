@@ -37,7 +37,7 @@ There are two ways to use it in your project:
 ```javascript
 // now fetch it as window.mikosoft global variable
 const wsClient = new window.mikosoft.WsClientBrowser(wsOpts);
-await wsClient.connect(); // open websocket connection
+await wsClient.connect('ws://localhost:3211?authkey=TRTmrt'); // open websocket connection
 ```
 
 - **import in JS**
@@ -45,13 +45,13 @@ await wsClient.connect(); // open websocket connection
 import { WsClientBrowser } from '@mikosoft/ws-client-browser';
 
 const wsClient = new WsClientBrowser(wsOpts);
-await wsClient.connect(); // open websocket connection
+await wsClient.connect('ws://localhost:3211?authkey=TRTmrt'); // open websocket connection
 ```
 
 
 
 ## API
-- **connect()** - connect to the websocket server
+- **connect(wsURL)** - connect to the websocket server
 - **disconnect()** - disconnect from the websocket server
 
 - **sendOne(to:string, msg:any)** - send message to one websocket socket/client (parameter *to* is the socket ID)
@@ -82,32 +82,12 @@ await wsClient.connect(); // open websocket connection
 ## Example
 ```javascript
 import { WsClientBrowser } from '@mikosoft/ws-client-browser';
-import apiwsConst from '/src/conf/apiwsConst.js';
 
 
-/**
- * Websocket client library.
- */
 class WsLib {
 
-
-  /**
-   * Connect to the websocket server (API)
-   * @param {object} trx - router transitional variable
-   * @returns {void}
-   */
-  async konekt(auth, trx) {
-    if (trx.uri === '/') { return; }
-
-    const ctrl = trx.ctrl; // current controller instance
-
-    // if the client is not connected try to connect to the WS server
-    if (!window.myApp.wsClient) {
-      const loggedUser = auth.getLoggedUserInfo();
-      if (!loggedUser) { return; }
-      const wsURL = `${apiwsConst.BASE_URL}?authkey=${apiwsConst.authkey}&clientType=panelUser&user_id=${loggedUser._id}&username=${loggedUser.username}`;
-      const wsOpts = {
-        wsURL,
+  constructor() {
+    const wsOpts = {
         connectTimeout: 8000, // HTTP request timeout i.e. websocket connect timeout (when internet is down or on localhost $ sudo ip link set lo down)
         reconnectAttempts: 12, // try to reconnect n times
         reconnectDelay: 5000, // delay between reconnections
@@ -116,28 +96,33 @@ class WsLib {
         debug: false,
         debug_DataParser: false
       };
-      // window.myApp.wsClient = new window.mikosoft.WsClientBrowser(wsOpts); // app.html --> <script src="/node_modules/@mikosoft/ws-client-browser/dist/WsClientBrowser.min.js"></script>
-      window.myApp.wsClient = new WsClientBrowser(wsOpts);
-    }
+      // <script src="/node_modules/@mikosoft/ws-client-browser/dist/WsClientBrowser.min.js"></script>
+      this.wsClient = new window.mikosoft.WsClientBrowser(wsOpts);
+  }
 
 
-    // open websocket connection
-    await window.myApp.wsClient.connect();
-
-
-    // disconnection listener
-    window.myApp.wsClient.on('disconnected', () => {
-      // console.log('Websocket is disconnected.');
-      window.myApp.wsClient = undefined;
+  // open websocket connection
+  async konekt() {
+    // connection listener
+    this.wsClient.on('connected', () => {
+      console.log('Websocket is connected.');
     });
 
+    // disconnection listener
+    this.wsClient.on('disconnected', () => {
+      console.log('Websocket is disconnected.');
+    });
+
+    // open websocket connection
+    const wsURL = 'ws://localhost:3211?authkey=TRTmrt';
+    await this.wsClient.connect(wsURL);
 
   }
 
 
   // close websocket connection
-  async dekonekt() {
-    if (!!window.myApp.wsClient) { window.myApp.wsClient.disconnect(); }
+  async diskonekt() {
+    if (!!this.wsClient) { this.wsClient.disconnect(); }
   }
 
 
@@ -160,4 +145,4 @@ $ npm run dev   # This command will watch for /src/ file changes and build in /d
 
 
 ### Licence
-Copyright (c) 2020 Saša Mikodanić licensed under [MIT](../LICENSE) .
+Copyright (c) 2021 [Mikosoft](http://www.mikosoft.info) licensed under [MIT](../LICENSE) .

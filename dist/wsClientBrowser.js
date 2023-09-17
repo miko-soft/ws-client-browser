@@ -538,12 +538,19 @@ class Raw {
 class WsClientBrowser13 {
 
   /**
-   * @param {{wsURL:string, questionTimeout:number, reconnectAttempts:number, reconnectDelay:number, subprotocols:string[], debug:boolean}} wcOpts - websocket client options
+   * wcOpts:
+   * - connectTimeout :number
+   * - reconnectAttempts :number
+   * - reconnectDelay :number
+   * - questionTimeout :number
+   * - subprotocols :string[]
+   * - debug :boolean
+   * - debug_DataParser :boolean
+   * @param {object} wcOpts - websocket client options
    */
   constructor(wcOpts) {
     // websocket client default options
     this.wcOpts = wcOpts;
-    if (!wcOpts.wsURL || !/^ws:\/\//.test(wcOpts.wsURL)) { throw new Error('Bad websocket URL'); } // HTTP request timeout i.e. websocket connect timeout (when internet is down or on localhost $ sudo ip link set lo down)
     if (!wcOpts.connectTimeout) { this.wcOpts.connectTimeout = 8000; } // HTTP request timeout i.e. websocket connect timeout (when internet is down or on localhost $ sudo ip link set lo down)
     if (wcOpts.reconnectAttempts === undefined) { this.wcOpts.reconnectAttempts = 6; } // how many times to try to reconnect when connection with the server is lost
     if (wcOpts.reconnectDelay === undefined) { this.wcOpts.reconnectDelay = 5000; } // delay between reconnections, default is 3 seconds
@@ -553,11 +560,11 @@ class WsClientBrowser13 {
     if (!wcOpts.debug) { this.wcOpts.debug = false; }
     if (!wcOpts.debug_DataParser) { this.wcOpts.debug_DataParser = false; } // ws message level debugging
 
+    this.wsURL;
     this.wsocket; // Websocket instance https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
     this.socketID; // socket ID number, for example: 20210214082949459100
     this.attempt = 1; // reconnect attempt counter
     this.subprotocolLib;
-
     this.helper = helper;
   }
 
@@ -565,13 +572,18 @@ class WsClientBrowser13 {
   /************* CLIENT CONNECTOR ************/
   /**
    * Connect to the websocket server.
+   * @param {string} wsURL - ws://localhost:3211/something?authkey=TRTmrt
    * @returns {Promise<WebSocket>}
    */
-  connect() {
+  connect(wsURL) {
+    if (!wsURL || !/^ws:\/\//.test(wsURL)) { throw new Error('Bad websocket URL'); }
+
+    // add socketID in the wsURL
     this.socketID = this.helper.generateID();
-    let wsURL = this.wcOpts.wsURL; // websocket URL: ws://localhost:3211/something?authkey=TRTmrt
     if (/\?[a-zA-Z0-9]/.test(wsURL)) { wsURL += `&socketID=${this.socketID}`; }
     else { wsURL += `socketID=${this.socketID}`; }
+
+    this.wsURL = wsURL; // used in reconnect()
 
     this.wsocket = new WebSocket(wsURL, this.wcOpts.subprotocols);
 
@@ -604,7 +616,7 @@ class WsClientBrowser13 {
     const delay = this.wcOpts.reconnectDelay;
     if (this.attempt <= attempts) {
       await this.helper.sleep(delay);
-      this.connect();
+      this.connect(this.wsURL);
       console.log(`Reconnect attempt #${this.attempt} of ${attempts} in ${delay}ms`);
       this.attempt++;
     }

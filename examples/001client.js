@@ -6,7 +6,8 @@ class TestClient extends window.mikosoft.WsClientBrowser {
 
 
   async connectMe() {
-    const wsocket = await this.connect();
+    const wsURL = 'ws://localhost:3211?authkey=TRTmrt';
+    const wsocket = await this.connect(wsURL);
     console.log('+++Connected', wsocket);
     this.messageReceiver();
   }
@@ -228,7 +229,6 @@ class TestClient extends window.mikosoft.WsClientBrowser {
 
 
 const wcOpts = {
-  wsURL: 'ws://localhost:3211?authkey=TRTmrt',
   connectTimeout: 8000,
   reconnectAttempts: 6, // try to reconnect n times
   reconnectDelay: 5000, // delay between reconnections
