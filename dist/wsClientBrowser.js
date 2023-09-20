@@ -576,7 +576,7 @@ class WsClientBrowser13 {
    * @returns {Promise<WebSocket>}
    */
   connect(wsURL) {
-    if (!wsURL || !/^ws:\/\//.test(wsURL)) { throw new Error('Bad websocket URL'); }
+    if (!wsURL || !/^wss?:\/\//.test(wsURL)) { throw new Error('Bad websocket URL'); }
 
     // add socketID in the wsURL
     this.socketID = this.helper.generateID();
@@ -617,7 +617,7 @@ class WsClientBrowser13 {
     if (this.attempt <= attempts) {
       await this.helper.sleep(delay);
       this.connect(this.wsURL);
-      console.log(`Reconnect attempt #${this.attempt} of ${attempts} in ${delay}ms`);
+      this._debugger(`Reconnect attempt #${this.attempt} of ${attempts} in ${delay}ms`);
       this.attempt++;
     }
   }
@@ -637,7 +637,7 @@ class WsClientBrowser13 {
    */
   onEvents() {
     this.wsocket.onopen = async (openEvt) => {
-      console.log(`WS Connection opened -- socketID: ${this.socketID}, subprotocol(handshaked): "${this.wsocket.protocol}"`);
+      this._debugger(`WS Connection opened -- socketID: ${this.socketID}, subprotocol(handshaked): "${this.wsocket.protocol}"`);
 
       this.onMessage();
 
@@ -653,7 +653,8 @@ class WsClientBrowser13 {
 
 
     this.wsocket.onclose = (closeEvt) => {
-      console.log('WS Connection closed');
+      this._debugger('WS Connection closed');
+
       delete this.wsocket; // Websocket instance https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
       delete this.socketID;
       this.reconnect();
@@ -989,7 +990,7 @@ class WsClientBrowser13 {
    */
   _debugger(...textParts) {
     const text = textParts.join('');
-    if (this.wcOpts.debug) { console.log(text); }
+    this.wcOpts.debug && console.log(text);
   }
 
 
