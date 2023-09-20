@@ -47,7 +47,7 @@ class WsClientBrowser13 {
   /************* CLIENT CONNECTOR ************/
   /**
    * Connect to the websocket server.
-   * @param {string} wsURL - ws://localhost:3211/something?authkey=TRTmrt
+   * @param {string} wsURL - ws://localhost:3211/something?authkey=TRTmrt or wss://localhost:3211/something?authkey=TRTmrt
    * @returns {Promise<WebSocket>}
    */
   connect(wsURL) {
