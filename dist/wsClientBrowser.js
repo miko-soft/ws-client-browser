@@ -572,21 +572,24 @@ class WsClientBrowser13 {
   /************* CLIENT CONNECTOR ************/
   /**
    * Connect to the websocket server.
-   * @param {string} wsURL - ws://localhost:3211/something?authkey=TRTmrt
+   * @param {string} wsURL - ws://localhost:3211/something?authkey=TRTmrt or wss://localhost:3211/something?authkey=TRTmrt
    * @returns {Promise<WebSocket>}
    */
   connect(wsURL) {
     if (!wsURL || !/^wss?:\/\//.test(wsURL)) { throw new Error('Bad websocket URL'); }
 
-    // add socketID in the wsURL
+    // generate socketID
     this.socketID = this.helper.generateID();
-    if (/\?[a-zA-Z0-9]/.test(wsURL)) { wsURL += `&socketID=${this.socketID}`; }
-    else { wsURL += `socketID=${this.socketID}`; }
 
-    this.wsURL = wsURL; // used in reconnect()
+    // add socketID in URL Search Parameters
+    const wsURL_obj = new URL(wsURL);
+    wsURL_obj.searchParams.set('socketID', this.socketID);
+    this.wsURL = wsURL_obj.toString();
 
-    this.wsocket = new WebSocket(wsURL, this.wcOpts.subprotocols);
+    // create websocket object
+    this.wsocket = new WebSocket(this.wsURL, this.wcOpts.subprotocols);
 
+    // listen events
     this.onEvents();
 
     // return socket as promise
