@@ -1,10 +1,9 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-var __webpack_exports__ = {};
 
 // UNUSED EXPORTS: WsClientBrowser
 
-;// CONCATENATED MODULE: ./src/lib/eventEmitter.js
+;// ./src/lib/eventEmitter.js
 /**
  * The EventEmitter based on window CustomEvent. Inspired by the NodeJS event lib.
  */
@@ -140,7 +139,7 @@ class EventEmitter {
 
 /* harmony default export */ const eventEmitter = (new EventEmitter());
 
-;// CONCATENATED MODULE: ./src/lib/helper.js
+;// ./src/lib/helper.js
 class Helper {
 
   /**
@@ -237,7 +236,7 @@ class Helper {
 
 /* harmony default export */ const helper = (new Helper());
 
-;// CONCATENATED MODULE: ./src/lib/subprotocol/jsonRWS.js
+;// ./src/lib/subprotocol/jsonRWS.js
 /**
  * Subprotocol name: jsonRWS
  * HTTP header: "Sec-WebSocket-Protocol": "jsonRWS"
@@ -464,7 +463,7 @@ class JsonRWS {
 
 /* harmony default export */ const jsonRWS = (new JsonRWS());
 
-;// CONCATENATED MODULE: ./src/lib/subprotocol/raw.js
+;// ./src/lib/subprotocol/raw.js
 /**
  * Subprotocol name: raw
  * HTTP header: "Sec-WebSocket-Protocol": "raw"
@@ -522,7 +521,7 @@ class Raw {
 
 /* harmony default export */ const raw = (new Raw());
 
-;// CONCATENATED MODULE: ./src/ws-clients/WsClientBrowser13.js
+;// ./src/ws-clients/WsClientBrowser13.js
 /**
  * Websocket Client for Browser
  * - websocket version: 13
@@ -1003,7 +1002,7 @@ class WsClientBrowser13 {
 
 /* harmony default export */ const ws_clients_WsClientBrowser13 = (WsClientBrowser13);
 
-;// CONCATENATED MODULE: ./index.js
+;// ./index.js
 
 
 
