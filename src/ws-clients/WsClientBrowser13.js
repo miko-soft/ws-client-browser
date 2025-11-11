@@ -94,7 +94,7 @@ class WsClientBrowser13 {
     const delay = this.wcOpts.reconnectDelay;
     if (this.attempt <= attempts) {
       await this.helper.sleep(delay);
-      this.connect(this.wsURL);
+      await this.connect(this.wsURL);
       this._debugger(`Reconnect attempt #${this.attempt} of ${attempts} in ${delay}ms`);
       this.attempt++;
     }
@@ -133,8 +133,8 @@ class WsClientBrowser13 {
     this.wsocket.onclose = (closeEvt) => {
       this._debugger('WS Connection closed');
 
-      delete this.wsocket; // Websocket instance https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
-      delete this.socketID;
+      this.wsocket = null; // Websocket instance https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+      this.socketID = null;
       this.reconnect();
       eventEmitter.emit('disconnected');
     };
@@ -273,6 +273,18 @@ class WsClientBrowser13 {
   async sendAll(payload) {
     const to = '0';
     const cmd = 'socket/sendall';
+    return await this.carryOut(to, cmd, payload);
+  }
+
+
+  /**
+   * Send message (payload) to server only. Do not send message to clients.
+   * @param {any} payload - message sent to the clients
+   * @return {object} full websocket message object {id, from, to, cmd, payload}
+   */
+  async sendServer(payload) {
+    const to = '0';
+    const cmd = 'socket/sendserver';
     return await this.carryOut(to, cmd, payload);
   }
 
