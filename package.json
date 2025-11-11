@@ -1,6 +1,6 @@
 {
   "name": "@mikosoft/ws-client-browser",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "title": "Websocket Client - Browser",
   "description": "Websocket Client for browser which works best with the Mikosoft Websocket Server.",
   "author": "Mikosoft",
